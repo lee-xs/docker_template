@@ -58,4 +58,15 @@ services:
       # 初始化数据库(后续的初始化sql会在这个库执行)
       MYSQL_DATABASE: 'init_temp'
       MYSQL_ROOT_HOST: '%'
-
+  mongodb:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      TZ: "Asia/Shanghai"
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: aleestar123
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"
+    restart: always
