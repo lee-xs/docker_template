@@ -61,12 +61,13 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongo
+    restart: always
     environment:
       TZ: "Asia/Shanghai"
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: aleestar123
     volumes:
-      - ./mongo/data/db:/data/db
+      - ./mongo/data:/data/db
+      - ./mongo/logs:/var/log/mongodb
     ports:
       - "27017:27017"
-    restart: always
