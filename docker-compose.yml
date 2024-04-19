@@ -58,7 +58,7 @@ services:
       # 初始化数据库(后续的初始化sql会在这个库执行)
       MYSQL_DATABASE: 'init_temp'
       MYSQL_ROOT_HOST: '%'
-  mongodb:
+  mongo:
     image: mongo:latest
     container_name: mongo
     restart: always
