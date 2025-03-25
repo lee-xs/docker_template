@@ -71,3 +71,41 @@ services:
       - ./mongo/logs:/var/log/mongodb
     ports:
       - "27017:27017"
+  etcd:
+    image: bitnami/etcd:latest
+    restart: always
+    volumes:
+      - etcd_data:/bitnami/etcd
+    environment:
+      ETCD_ENABLE_V2: "true"
+      ALLOW_NONE_AUTHENTICATION: "yes"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+    ports:
+      - "2379:2379/tcp"
+  apisix:
+    image: apache/apisix:latest
+    restart: always
+    volumes:
+      - ./apisix/conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    ports:
+      # APISIX HTTP 端口
+      - "9080:9080"
+      # Control API 端口
+      - "9090:9090"
+      # Admin API 端口
+      - "9180:9180"
+    depends_on:
+      - etcd
+  apisix-dashboard:
+    image: apache/apisix-dashboard:latest
+    restart: always
+    volumes:
+      - ./apisix/conf/dashboard.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
+    ports:
+      # Dashboard 管理端口
+      - "9000:9000"
+
+volumes:
+  etcd_data:
+    driver: local
